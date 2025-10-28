@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Rename Group - Alpha Strike Group Editor{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h1>Rename Group File</h1>
+        <p class="text-muted">Current filename: {{ filename }}</p>
+
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="new_filename" class="form-label">New Filename</label>
+                        <input type="text" class="form-control" id="new_filename" name="new_filename"
+                            value="{{ filename }}" required>
+                        <div class="form-text">The new filename (will add .json if not included)</div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>Warning:</strong> Renaming will change the filename on disk. The group data inside will
+                        remain unchanged.
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Rename File</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

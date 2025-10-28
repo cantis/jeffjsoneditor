@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Copy Group - Alpha Strike Group Editor{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h1>Copy Group File</h1>
+        <p class="text-muted">Source: {{ filename }}</p>
+
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="new_filename" class="form-label">New Filename</label>
+                        <input type="text" class="form-control" id="new_filename" name="new_filename"
+                            placeholder="copy_of_{{ filename }}" required>
+                        <div class="form-text">The new filename for the copy (will add .json if not included)</div>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="update_member_uuids"
+                            name="update_member_uuids" checked>
+                        <label class="form-check-label" for="update_member_uuids">
+                            Generate new UUIDs for members
+                        </label>
+                        <div class="form-text">If checked, all members will get new unique identifiers</div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <strong>Note:</strong> The group UUID will always be updated for the copy.
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Create Copy</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

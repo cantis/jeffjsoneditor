@@ -37,6 +37,9 @@
                         <td>{{ file }}</td>
                         <td>
                             <a href="{{ url_for('edit_group', filename=file) }}" class="btn btn-sm btn-primary">Edit</a>
+                            <a href="{{ url_for('copy_group', filename=file) }}" class="btn btn-sm btn-info">Copy</a>
+                            <a href="{{ url_for('rename_group', filename=file) }}"
+                                class="btn btn-sm btn-warning">Rename</a>
                             <a href="{{ url_for('download_file', filename=file) }}"
                                 class="btn btn-sm btn-success">Download</a>
                             <form method="POST" action="{{ url_for('delete_group', filename=file) }}"

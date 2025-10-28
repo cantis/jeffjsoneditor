@@ -111,6 +111,26 @@
                         </div>
                     </div>
 
+                    <h5 class="mb-3 mt-4">Movement</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="move_value" class="form-label">Move Value</label>
+                            <input type="number" class="form-control" id="move_value" name="move_value" value="0">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="move_current" class="form-label">Current Move</label>
+                            <input type="number" class="form-control" id="move_current" name="move_current" value="0">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="move_type" class="form-label">Move Type</label>
+                            <input type="text" class="form-control" id="move_type" name="move_type" value="Walk">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="jumpMove" class="form-label">Jump Move</label>
+                        <input type="number" class="form-control" id="jumpMove" name="jumpMove" value="0">
+                    </div>
+
                     <h5 class="mb-3 mt-4">Pilot</h5>
                     <div class="row mb-3">
                         <div class="col-md-4">
@@ -148,6 +168,12 @@
                     <div class="mb-3">
                         <label for="imageURL" class="form-label">Image URL</label>
                         <input type="url" class="form-control" id="imageURL" name="imageURL">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="abilities" class="form-label">Abilities</label>
+                        <input type="text" class="form-control" id="abilities" name="abilities">
+                        <div class="form-text">Enter abilities separated by commas (e.g., "ENE, CASE, AMS")</div>
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">

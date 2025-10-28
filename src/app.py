@@ -122,6 +122,17 @@ def new_member(filename):
                 'imageURL': request.form.get('imageURL', ''),
                 'currentHeat': int(request.form.get('currentHeat', 0) or 0),
                 'roundHeat': int(request.form.get('roundHeat', 0) or 0),
+                'abilities': [a.strip() for a in request.form.get('abilities', '').split(',') if a.strip()],
+                'jumpMove': int(request.form.get('jumpMove', 0) or 0),
+                'move': [
+                    {
+                        'move': int(request.form.get('move_value', 0) or 0),
+                        'currentMove': int(request.form.get('move_current', 0) or 0),
+                        'type': request.form.get('move_type', 'Walk'),
+                    }
+                ]
+                if request.form.get('move_value')
+                else [],
                 'damage': {
                     'short': int(request.form.get('damage_short', 0) or 0),
                     'medium': int(request.form.get('damage_medium', 0) or 0),
@@ -193,6 +204,19 @@ def edit_member(filename, member_uuid):
             member['imageURL'] = request.form.get('imageURL', '')
             member['currentHeat'] = int(request.form.get('currentHeat', 0) or 0)
             member['roundHeat'] = int(request.form.get('roundHeat', 0) or 0)
+            member['abilities'] = [a.strip() for a in request.form.get('abilities', '').split(',') if a.strip()]
+            member['jumpMove'] = int(request.form.get('jumpMove', 0) or 0)
+            member['move'] = (
+                [
+                    {
+                        'move': int(request.form.get('move_value', 0) or 0),
+                        'currentMove': int(request.form.get('move_current', 0) or 0),
+                        'type': request.form.get('move_type', 'Walk'),
+                    }
+                ]
+                if request.form.get('move_value')
+                else member.get('move', [])
+            )
 
             member['damage']['short'] = int(request.form.get('damage_short', 0) or 0)
             member['damage']['medium'] = int(request.form.get('damage_medium', 0) or 0)
@@ -257,6 +281,88 @@ def delete_group(filename):
     return redirect(url_for('index'))
 
 
+@app.route('/copy/<filename>', methods=['GET', 'POST'])
+def copy_group(filename):
+    """Copy a group file."""
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    if not os.path.exists(filepath):
+        flash(f'File "{filename}" not found!', 'danger')
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        new_filename = request.form.get('new_filename', '')
+        if not new_filename:
+            flash('Please provide a new filename!', 'danger')
+            return render_template('copy_group.html', filename=filename)
+
+        if not new_filename.endswith('.json'):
+            new_filename += '.json'
+
+        new_filepath = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
+
+        if os.path.exists(new_filepath):
+            flash(f'File "{new_filename}" already exists!', 'danger')
+            return render_template('copy_group.html', filename=filename)
+
+        try:
+            with open(filepath, 'r') as f:
+                group_data = json.load(f)
+
+            # Update UUID and timestamp for the copy
+            group_data['uuid'] = str(uuid_lib.uuid4())
+            group_data['lastUpdated'] = datetime.now().isoformat()
+
+            # Update member UUIDs if requested
+            if request.form.get('update_member_uuids') == 'on':
+                for member in group_data.get('members', []):
+                    member['uuid'] = str(uuid_lib.uuid4())
+
+            with open(new_filepath, 'w') as f:
+                json.dump(group_data, f, indent=2)
+
+            flash(f'File copied to "{new_filename}" successfully!', 'success')
+            return redirect(url_for('edit_group', filename=new_filename))
+        except Exception as e:
+            flash(f'Error copying file: {str(e)}', 'danger')
+
+    return render_template('copy_group.html', filename=filename)
+
+
+@app.route('/rename/<filename>', methods=['GET', 'POST'])
+def rename_group(filename):
+    """Rename a group file."""
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    if not os.path.exists(filepath):
+        flash(f'File "{filename}" not found!', 'danger')
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        new_filename = request.form.get('new_filename', '')
+        if not new_filename:
+            flash('Please provide a new filename!', 'danger')
+            return render_template('rename_group.html', filename=filename)
+
+        if not new_filename.endswith('.json'):
+            new_filename += '.json'
+
+        new_filepath = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
+
+        if os.path.exists(new_filepath) and new_filename != filename:
+            flash(f'File "{new_filename}" already exists!', 'danger')
+            return render_template('rename_group.html', filename=filename)
+
+        try:
+            os.rename(filepath, new_filepath)
+            flash(f'File renamed to "{new_filename}" successfully!', 'success')
+            return redirect(url_for('edit_group', filename=new_filename))
+        except Exception as e:
+            flash(f'Error renaming file: {str(e)}', 'danger')
+
+    return render_template('rename_group.html', filename=filename)
+
+
 @app.route('/download/<filename>')
 def download_file(filename):
     """Download a JSON file."""
@@ -266,7 +372,10 @@ def download_file(filename):
         flash(f'File "{filename}" not found!', 'danger')
         return redirect(url_for('index'))
 
-    return send_file(filepath, as_attachment=True)
+    # Convert to absolute path
+    absolute_path = os.path.abspath(filepath)
+
+    return send_file(absolute_path, as_attachment=True, download_name=filename, mimetype='application/json')
 
 
 @app.route('/upload', methods=['POST'])
