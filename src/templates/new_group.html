@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}New Group - Alpha Strike Group Editor{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1>Create New Group</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="filename" class="form-label">Filename</label>
+                        <input type="text" class="form-control" id="filename" name="filename"
+                            placeholder="my_group.json" required>
+                        <div class="form-text">The filename for this group (will add .json if not included)</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Group Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="groupLabel" class="form-label">Group Label</label>
+                        <input type="text" class="form-control" id="groupLabel" name="groupLabel">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="formationBonus" class="form-label">Formation Bonus</label>
+                        <input type="text" class="form-control" id="formationBonus" name="formationBonus">
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Create Group</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

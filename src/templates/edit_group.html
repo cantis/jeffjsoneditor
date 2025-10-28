@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Group - Alpha Strike Group Editor{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1>Edit Group: {{ group.name }}</h1>
+        <p class="text-muted">File: {{ filename }} | UUID: {{ group.uuid }}</p>
+
+        <ul class="nav nav-tabs mb-3" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="group-tab" data-bs-toggle="tab" data-bs-target="#group"
+                    type="button">Group Info</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="members-tab" data-bs-toggle="tab" data-bs-target="#members"
+                    type="button">Members ({{ group.members|length }})</button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="group" role="tabpanel">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Group Name</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ group.name }}"
+                                    required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="groupLabel" class="form-label">Group Label</label>
+                                <input type="text" class="form-control" id="groupLabel" name="groupLabel"
+                                    value="{{ group.groupLabel or '' }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="formationBonus" class="form-label">Formation Bonus</label>
+                                <input type="text" class="form-control" id="formationBonus" name="formationBonus"
+                                    value="{{ group.formationBonus or '' }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Last Updated</label>
+                                <input type="text" class="form-control" value="{{ group.lastUpdated or 'N/A' }}"
+                                    disabled>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="members" role="tabpanel">
+                <div class="mb-3">
+                    <a href="{{ url_for('new_member', filename=filename) }}" class="btn btn-success">Add New Member</a>
+                </div>
+
+                {% if group.members %}
+                <div class="row">
+                    {% for member in group.members %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card member-card">
+                            <div class="card-header">
+                                <strong>{{ member.name }}</strong>
+                                {% if member.customName %}
+                                <br><small class="text-muted">"{{ member.customName }}"</small>
+                                {% endif %}
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-1"><strong>Class:</strong> {{ member.class }} {{ member.variant }}</p>
+                                <p class="mb-1"><strong>Pilot:</strong> {{ member.pilot.name or 'Unnamed' }} (G{{
+                                    member.pilot.gunnery }}/P{{ member.pilot.piloting }})</p>
+                                <p class="mb-1"><strong>Tonnage:</strong> {{ member.tonnage }}t</p>
+                                <p class="mb-1"><strong>Role:</strong> {{ member.role or 'N/A' }}</p>
+                                <p class="mb-1"><strong>Damage (S/M/L/E):</strong> {{ member.damage.short }}/{{
+                                    member.damage.medium }}/{{ member.damage.long }}/{{ member.damage.extreme }}</p>
+                                <p class="mb-1"><strong>Armor/Structure:</strong> {{ member.armor }}/{{ member.structure
+                                    }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="{{ url_for('edit_member', filename=filename, member_uuid=member.uuid) }}"
+                                    class="btn btn-sm btn-primary">Edit</a>
+                                <form method="POST"
+                                    action="{{ url_for('delete_member', filename=filename, member_uuid=member.uuid) }}"
+                                    style="display: inline;">
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Are you sure you want to delete this member?')">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    No members in this group yet. <a href="{{ url_for('new_member', filename=filename) }}"
+                        class="alert-link">Add a member</a> to get started.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

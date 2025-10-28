@@ -1,0 +1,81 @@
+{
+  "name": "Sample Lance",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "lastUpdated": "2025-10-27T12:00:00",
+  "formationBonus": "+1 Initiative",
+  "groupLabel": "Heavy Lance",
+  "members": [
+    {
+      "mechCreatorUUID": "",
+      "customName": "Red Leader",
+      "classification": "BattleMech",
+      "class": "Atlas",
+      "variant": "AS7-D",
+      "name": "Atlas AS7-D",
+      "dateIntroduced": "2755",
+      "tmm": 1,
+      "tonnage": 100,
+      "tro": "3039",
+      "role": "Juggernaut",
+      "threshold": 0,
+      "costCR": 0,
+      "mulID": 1001,
+      "basePoints": 95,
+      "currentSkill": 4,
+      "overheat": 0,
+      "structure": 4,
+      "armor": 10,
+      "type": "BM",
+      "size": 4,
+      "showDetails": true,
+      "imageURL": "",
+      "currentHeat": 0,
+      "roundHeat": 0,
+      "abilities": [],
+      "move": [
+        {
+          "move": 6,
+          "currentMove": 6,
+          "type": "Walk"
+        }
+      ],
+      "jumpMove": 0,
+      "damage": {
+        "short": 4,
+        "medium": 4,
+        "long": 3,
+        "extreme": 0,
+        "shortMinimal": false,
+        "mediumMinimal": false,
+        "longMinimal": false,
+        "extremeMinimal": false
+      },
+      "pilot": {
+        "name": "Commander Smith",
+        "piloting": 4,
+        "gunnery": 3,
+        "wounds": 0,
+        "alphaStrikeAbilities": []
+      },
+      "currentArmor": [],
+      "currentStructure": [],
+      "engineHits": [],
+      "fireControlHits": [],
+      "mpControlHits": [],
+      "weaponHits": [],
+      "vehicleMotive910": [],
+      "vehicleMotive11": [],
+      "vehicleMotive12": false,
+      "roundArmor": [],
+      "roundStructure": [],
+      "roundEngineHits": [],
+      "roundFireControlHits": [],
+      "roundMpControlHits": [],
+      "roundWeaponHits": [],
+      "roundVehicleMotive910": [],
+      "roundVehicleMotive11": [],
+      "roundVehicleMotive12": false,
+      "uuid": "550e8400-e29b-41d4-a716-446655440001"
+    }
+  ]
+}

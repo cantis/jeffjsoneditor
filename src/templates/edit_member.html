@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Member - Alpha Strike Group Editor{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <h1>Edit Member: {{ member.name }}</h1>
+        <p class="text-muted">UUID: {{ member.uuid }}</p>
+
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    <h5 class="mb-3">Basic Information</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="class" class="form-label">Class *</label>
+                            <input type="text" class="form-control" id="class" name="class" value="{{ member.class }}"
+                                required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="variant" class="form-label">Variant *</label>
+                            <input type="text" class="form-control" id="variant" name="variant"
+                                value="{{ member.variant }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Name *</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ member.name }}"
+                                required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="customName" class="form-label">Custom Name</label>
+                            <input type="text" class="form-control" id="customName" name="customName"
+                                value="{{ member.customName or '' }}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="classification" class="form-label">Classification</label>
+                            <input type="text" class="form-control" id="classification" name="classification"
+                                value="{{ member.classification or '' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="type" class="form-label">Type</label>
+                            <input type="text" class="form-control" id="type" name="type"
+                                value="{{ member.type or '' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="role" class="form-label">Role</label>
+                            <input type="text" class="form-control" id="role" name="role"
+                                value="{{ member.role or '' }}">
+                        </div>
+                    </div>
+
+                    <h5 class="mb-3 mt-4">Stats</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="tonnage" class="form-label">Tonnage</label>
+                            <input type="number" class="form-control" id="tonnage" name="tonnage" step="0.1"
+                                value="{{ member.tonnage or 0 }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="tmm" class="form-label">TMM</label>
+                            <input type="number" class="form-control" id="tmm" name="tmm" step="1"
+                                value="{{ member.tmm or 0 }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="armor" class="form-label">Armor</label>
+                            <input type="number" class="form-control" id="armor" name="armor"
+                                value="{{ member.armor or 0 }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="structure" class="form-label">Structure</label>
+                            <input type="number" class="form-control" id="structure" name="structure"
+                                value="{{ member.structure or 0 }}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="size" class="form-label">Size</label>
+                            <input type="number" class="form-control" id="size" name="size"
+                                value="{{ member.size or 1 }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="threshold" class="form-label">Threshold</label>
+                            <input type="number" class="form-control" id="threshold" name="threshold"
+                                value="{{ member.threshold or 0 }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="basePoints" class="form-label">Base Points</label>
+                            <input type="number" class="form-control" id="basePoints" name="basePoints"
+                                value="{{ member.basePoints or 0 }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="costCR" class="form-label">Cost (CR)</label>
+                            <input type="number" class="form-control" id="costCR" name="costCR" step="0.1"
+                                value="{{ member.costCR or 0 }}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="currentSkill" class="form-label">Current Skill</label>
+                            <input type="number" class="form-control" id="currentSkill" name="currentSkill"
+                                value="{{ member.currentSkill or 4 }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="currentHeat" class="form-label">Current Heat</label>
+                            <input type="number" class="form-control" id="currentHeat" name="currentHeat"
+                                value="{{ member.currentHeat or 0 }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="overheat" class="form-label">Overheat</label>
+                            <input type="number" class="form-control" id="overheat" name="overheat"
+                                value="{{ member.overheat or 0 }}">
+                        </div>
+                    </div>
+
+                    <h5 class="mb-3 mt-4">Damage (S/M/L/E)</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="damage_short" class="form-label">Short *</label>
+                            <input type="number" class="form-control" id="damage_short" name="damage_short"
+                                value="{{ member.damage.short }}" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="damage_medium" class="form-label">Medium *</label>
+                            <input type="number" class="form-control" id="damage_medium" name="damage_medium"
+                                value="{{ member.damage.medium }}" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="damage_long" class="form-label">Long *</label>
+                            <input type="number" class="form-control" id="damage_long" name="damage_long"
+                                value="{{ member.damage.long }}" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="damage_extreme" class="form-label">Extreme *</label>
+                            <input type="number" class="form-control" id="damage_extreme" name="damage_extreme"
+                                value="{{ member.damage.extreme }}" required>
+                        </div>
+                    </div>
+
+                    <h5 class="mb-3 mt-4">Pilot</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="pilot_name" class="form-label">Pilot Name</label>
+                            <input type="text" class="form-control" id="pilot_name" name="pilot_name"
+                                value="{{ member.pilot.name or '' }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="pilot_gunnery" class="form-label">Gunnery *</label>
+                            <input type="number" class="form-control" id="pilot_gunnery" name="pilot_gunnery"
+                                value="{{ member.pilot.gunnery }}" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="pilot_piloting" class="form-label">Piloting *</label>
+                            <input type="number" class="form-control" id="pilot_piloting" name="pilot_piloting"
+                                value="{{ member.pilot.piloting }}" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="pilot_wounds" class="form-label">Wounds</label>
+                            <input type="number" class="form-control" id="pilot_wounds" name="pilot_wounds"
+                                value="{{ member.pilot.wounds or 0 }}">
+                        </div>
+                    </div>
+
+                    <h5 class="mb-3 mt-4">Additional Information</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="dateIntroduced" class="form-label">Date Introduced</label>
+                            <input type="text" class="form-control" id="dateIntroduced" name="dateIntroduced"
+                                value="{{ member.dateIntroduced or '' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="tro" class="form-label">TRO</label>
+                            <input type="text" class="form-control" id="tro" name="tro" value="{{ member.tro or '' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="mulID" class="form-label">MUL ID</label>
+                            <input type="number" class="form-control" id="mulID" name="mulID"
+                                value="{{ member.mulID or 0 }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="imageURL" class="form-label">Image URL</label>
+                        <input type="url" class="form-control" id="imageURL" name="imageURL"
+                            value="{{ member.imageURL or '' }}">
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="showDetails" name="showDetails" {% if
+                            member.showDetails %}checked{% endif %}>
+                        <label class="form-check-label" for="showDetails">
+                            Show Details
+                        </label>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('edit_group', filename=filename) }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
