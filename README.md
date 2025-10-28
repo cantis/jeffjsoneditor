@@ -2,7 +2,9 @@
 
 Evan Young October 2025
 
-A lightweight Flask web application for editing Alpha Strike group JSON files based on the BattleTech tabletop game.
+A lightweight Flask web application for editing json files for the Jeff's BT Tools Site
+
+https://jeffs-bt-tools.github.io/battletech-tools/
 
 ## Features
 
@@ -11,6 +13,12 @@ A lightweight Flask web application for editing Alpha Strike group JSON files ba
 - **File Operations**: Upload, download, and save JSON files
 - **Bootstrap UI**: Clean, responsive interface using Flask-Bootstrap
 - **Schema Validation**: Based on the Alpha Strike Group Export schema
+
+## Limitations
+- Very quick local flask app with no authentication or logging
+- Limited error handling and input validation
+- Creates local files in the data/ directory until you download them somewhere else
+- You aren't creating units, you're editing JSON files that represent groups and their members!
 
 ## Installation
 
