@@ -1,5 +1,7 @@
 # Alpha Strike Group Editor
 
+Evan Young October 2025
+
 A lightweight Flask web application for editing Alpha Strike group JSON files based on the BattleTech tabletop game.
 
 ## Features
@@ -95,6 +97,3 @@ The application follows the Alpha Strike Group Export schema defined in `jeffimp
 - No authentication or logging is implemented (lightweight design)
 - Secret key is set to a development value (change for production use)
 
-## License
-
-This project is for personal use with BattleTech Alpha Strike data.
