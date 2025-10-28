@@ -2,7 +2,7 @@
 
 Evan Young October 2025
 
-A lightweight Flask web application for editing json files for the Jeff's BT Tools Site
+A lightweight Flask web application for editing ALPHA STRIKE json files for the Jeff's BT Tools Site
 
 https://jeffs-bt-tools.github.io/battletech-tools/
 
