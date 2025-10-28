@@ -7,6 +7,41 @@
     <div class="col-md-10 offset-md-1">
         <h1>Add New Member</h1>
 
+        {% if members %}
+        <div class="alert alert-secondary">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-6">
+                    <form method="GET" action="{{ url_for('new_member', filename=filename) }}">
+                        <label for="duplicate" class="form-label">Duplicate existing member</label>
+                        <select id="duplicate" name="duplicate" class="form-select">
+                            {% for m in members %}
+                            <option value="{{ m.uuid }}">
+                                {{ m.name }} ({{ m.class }} {{ m.variant }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">Choose a member to pre-fill this form.</div>
+                        <button type="submit" class="btn btn-outline-primary mt-2">Load</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <form method="POST" action="{{ url_for('new_member', filename=filename) }}">
+                        <label for="duplicate_now" class="form-label">Duplicate and add now</label>
+                        <select id="duplicate_now" name="duplicate_uuid" class="form-select">
+                            {% for m in members %}
+                            <option value="{{ m.uuid }}">
+                                {{ m.name }} ({{ m.class }} {{ m.variant }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">Creates a copy immediately with a new UUID.</div>
+                        <button type="submit" class="btn btn-primary mt-2">Duplicate and add now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         <div class="card">
             <div class="card-body">
                 <form method="POST">
@@ -14,37 +49,44 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="class" class="form-label">Class *</label>
-                            <input type="text" class="form-control" id="class" name="class" required>
+                            <input type="text" class="form-control" id="class" name="class"
+                                value="{{ prefill.class or '' }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="variant" class="form-label">Variant *</label>
-                            <input type="text" class="form-control" id="variant" name="variant" required>
+                            <input type="text" class="form-control" id="variant" name="variant"
+                                value="{{ prefill.variant or '' }}" required>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="name" class="form-label">Name *</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+                            <input type="text" class="form-control" id="name" name="name"
+                                value="{{ prefill.name or '' }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="customName" class="form-label">Custom Name</label>
-                            <input type="text" class="form-control" id="customName" name="customName">
+                            <input type="text" class="form-control" id="customName" name="customName"
+                                value="{{ prefill.customName or '' }}">
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="classification" class="form-label">Classification</label>
-                            <input type="text" class="form-control" id="classification" name="classification">
+                            <input type="text" class="form-control" id="classification" name="classification"
+                                value="{{ prefill.classification or '' }}">
                         </div>
                         <div class="col-md-4">
                             <label for="type" class="form-label">Type</label>
-                            <input type="text" class="form-control" id="type" name="type">
+                            <input type="text" class="form-control" id="type" name="type"
+                                value="{{ prefill.type or '' }}">
                         </div>
                         <div class="col-md-4">
                             <label for="role" class="form-label">Role</label>
-                            <input type="text" class="form-control" id="role" name="role">
+                            <input type="text" class="form-control" id="role" name="role"
+                                value="{{ prefill.role or '' }}">
                         </div>
                     </div>
 
@@ -52,38 +94,46 @@
                     <div class="row mb-3">
                         <div class="col-md-3">
                             <label for="tonnage" class="form-label">Tonnage</label>
-                            <input type="number" class="form-control" id="tonnage" name="tonnage" step="0.1" value="0">
+                            <input type="number" class="form-control" id="tonnage" name="tonnage" step="0.1"
+                                value="{{ prefill.tonnage if prefill.tonnage is defined else 0 }}">
                         </div>
                         <div class="col-md-3">
                             <label for="tmm" class="form-label">TMM</label>
-                            <input type="number" class="form-control" id="tmm" name="tmm" step="1" value="0">
+                            <input type="number" class="form-control" id="tmm" name="tmm" step="1"
+                                value="{{ prefill.tmm if prefill.tmm is defined else 0 }}">
                         </div>
                         <div class="col-md-3">
                             <label for="armor" class="form-label">Armor</label>
-                            <input type="number" class="form-control" id="armor" name="armor" value="0">
+                            <input type="number" class="form-control" id="armor" name="armor"
+                                value="{{ prefill.armor if prefill.armor is defined else 0 }}">
                         </div>
                         <div class="col-md-3">
                             <label for="structure" class="form-label">Structure</label>
-                            <input type="number" class="form-control" id="structure" name="structure" value="0">
+                            <input type="number" class="form-control" id="structure" name="structure"
+                                value="{{ prefill.structure if prefill.structure is defined else 0 }}">
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-md-3">
                             <label for="size" class="form-label">Size</label>
-                            <input type="number" class="form-control" id="size" name="size" value="1">
+                            <input type="number" class="form-control" id="size" name="size"
+                                value="{{ prefill.size if prefill.size is defined else 1 }}">
                         </div>
                         <div class="col-md-3">
                             <label for="threshold" class="form-label">Threshold</label>
-                            <input type="number" class="form-control" id="threshold" name="threshold" value="0">
+                            <input type="number" class="form-control" id="threshold" name="threshold"
+                                value="{{ prefill.threshold if prefill.threshold is defined else 0 }}">
                         </div>
                         <div class="col-md-3">
                             <label for="basePoints" class="form-label">Base Points</label>
-                            <input type="number" class="form-control" id="basePoints" name="basePoints" value="0">
+                            <input type="number" class="form-control" id="basePoints" name="basePoints"
+                                value="{{ prefill.basePoints if prefill.basePoints is defined else 0 }}">
                         </div>
                         <div class="col-md-3">
                             <label for="costCR" class="form-label">Cost (CR)</label>
-                            <input type="number" class="form-control" id="costCR" name="costCR" step="0.1" value="0">
+                            <input type="number" class="form-control" id="costCR" name="costCR" step="0.1"
+                                value="{{ prefill.costCR if prefill.costCR is defined else 0 }}">
                         </div>
                     </div>
 
@@ -91,23 +141,24 @@
                     <div class="row mb-3">
                         <div class="col-md-3">
                             <label for="damage_short" class="form-label">Short *</label>
-                            <input type="number" class="form-control" id="damage_short" name="damage_short" value="0"
-                                required>
+                            <input type="number" class="form-control" id="damage_short" name="damage_short"
+                                value="{{ prefill.damage_short if prefill.damage_short is defined else 0 }}" required>
                         </div>
                         <div class="col-md-3">
                             <label for="damage_medium" class="form-label">Medium *</label>
-                            <input type="number" class="form-control" id="damage_medium" name="damage_medium" value="0"
-                                required>
+                            <input type="number" class="form-control" id="damage_medium" name="damage_medium"
+                                value="{{ prefill.damage_medium if prefill.damage_medium is defined else 0 }}" required>
                         </div>
                         <div class="col-md-3">
                             <label for="damage_long" class="form-label">Long *</label>
-                            <input type="number" class="form-control" id="damage_long" name="damage_long" value="0"
-                                required>
+                            <input type="number" class="form-control" id="damage_long" name="damage_long"
+                                value="{{ prefill.damage_long if prefill.damage_long is defined else 0 }}" required>
                         </div>
                         <div class="col-md-3">
                             <label for="damage_extreme" class="form-label">Extreme *</label>
                             <input type="number" class="form-control" id="damage_extreme" name="damage_extreme"
-                                value="0" required>
+                                value="{{ prefill.damage_extreme if prefill.damage_extreme is defined else 0 }}"
+                                required>
                         </div>
                     </div>
 
@@ -115,37 +166,43 @@
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="move_value" class="form-label">Move Value</label>
-                            <input type="number" class="form-control" id="move_value" name="move_value" value="0">
+                            <input type="number" class="form-control" id="move_value" name="move_value"
+                                value="{{ prefill.move_value if prefill.move_value is defined else 0 }}">
                         </div>
                         <div class="col-md-4">
                             <label for="move_current" class="form-label">Current Move</label>
-                            <input type="number" class="form-control" id="move_current" name="move_current" value="0">
+                            <input type="number" class="form-control" id="move_current" name="move_current"
+                                value="{{ prefill.move_current if prefill.move_current is defined else 0 }}">
                         </div>
                         <div class="col-md-4">
                             <label for="move_type" class="form-label">Move Type</label>
-                            <input type="text" class="form-control" id="move_type" name="move_type" value="Walk">
+                            <input type="text" class="form-control" id="move_type" name="move_type"
+                                value="{{ prefill.move_type if prefill.move_type is defined else 'Walk' }}">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="jumpMove" class="form-label">Jump Move</label>
-                        <input type="number" class="form-control" id="jumpMove" name="jumpMove" value="0">
+                        <input type="number" class="form-control" id="jumpMove" name="jumpMove"
+                            value="{{ prefill.jumpMove if prefill.jumpMove is defined else 0 }}">
                     </div>
 
                     <h5 class="mb-3 mt-4">Pilot</h5>
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="pilot_name" class="form-label">Pilot Name</label>
-                            <input type="text" class="form-control" id="pilot_name" name="pilot_name">
+                            <input type="text" class="form-control" id="pilot_name" name="pilot_name"
+                                value="{{ prefill.pilot_name or '' }}">
                         </div>
                         <div class="col-md-4">
                             <label for="pilot_gunnery" class="form-label">Gunnery *</label>
-                            <input type="number" class="form-control" id="pilot_gunnery" name="pilot_gunnery" value="4"
-                                required>
+                            <input type="number" class="form-control" id="pilot_gunnery" name="pilot_gunnery"
+                                value="{{ prefill.pilot_gunnery if prefill.pilot_gunnery is defined else 4 }}" required>
                         </div>
                         <div class="col-md-4">
                             <label for="pilot_piloting" class="form-label">Piloting *</label>
                             <input type="number" class="form-control" id="pilot_piloting" name="pilot_piloting"
-                                value="4" required>
+                                value="{{ prefill.pilot_piloting if prefill.pilot_piloting is defined else 4 }}"
+                                required>
                         </div>
                     </div>
 
@@ -153,26 +210,30 @@
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="dateIntroduced" class="form-label">Date Introduced</label>
-                            <input type="text" class="form-control" id="dateIntroduced" name="dateIntroduced">
+                            <input type="text" class="form-control" id="dateIntroduced" name="dateIntroduced"
+                                value="{{ prefill.dateIntroduced or '' }}">
                         </div>
                         <div class="col-md-4">
                             <label for="tro" class="form-label">TRO</label>
-                            <input type="text" class="form-control" id="tro" name="tro">
+                            <input type="text" class="form-control" id="tro" name="tro" value="{{ prefill.tro or '' }}">
                         </div>
                         <div class="col-md-4">
                             <label for="mulID" class="form-label">MUL ID</label>
-                            <input type="number" class="form-control" id="mulID" name="mulID" value="0">
+                            <input type="number" class="form-control" id="mulID" name="mulID"
+                                value="{{ prefill.mulID if prefill.mulID is defined else 0 }}">
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label for="imageURL" class="form-label">Image URL</label>
-                        <input type="url" class="form-control" id="imageURL" name="imageURL">
+                        <input type="url" class="form-control" id="imageURL" name="imageURL"
+                            value="{{ prefill.imageURL or '' }}">
                     </div>
 
                     <div class="mb-3">
                         <label for="abilities" class="form-label">Abilities</label>
-                        <input type="text" class="form-control" id="abilities" name="abilities">
+                        <input type="text" class="form-control" id="abilities" name="abilities"
+                            value="{{ prefill.abilities or '' }}">
                         <div class="form-text">Enter abilities separated by commas (e.g., "ENE, CASE, AMS")</div>
                     </div>
 

@@ -1,3 +1,4 @@
+import copy
 import json
 import os
 import uuid as uuid_lib
@@ -96,6 +97,29 @@ def new_member(filename):
             with open(filepath, 'r') as f:
                 group_data = json.load(f)
 
+            # Quick path: duplicate an existing member immediately
+            duplicate_uuid = request.form.get('duplicate_uuid')
+            if duplicate_uuid:
+                src = next((m for m in group_data.get('members', []) if m.get('uuid') == duplicate_uuid), None)
+                if not src:
+                    flash('Selected member to duplicate was not found.', 'danger')
+                    return redirect(url_for('new_member', filename=filename))
+
+                new_member_obj = copy.deepcopy(src)
+                new_member_obj['uuid'] = str(uuid_lib.uuid4())
+                # Optionally mark as copy to distinguish in list
+                if new_member_obj.get('name'):
+                    new_member_obj['name'] = f'{new_member_obj["name"]} (Copy)'
+
+                group_data['members'].append(new_member_obj)
+                group_data['lastUpdated'] = datetime.now().isoformat()
+
+                with open(filepath, 'w') as wf:
+                    json.dump(group_data, wf, indent=2)
+
+                flash('Member duplicated and added successfully!', 'success')
+                return redirect(url_for('edit_group', filename=filename))
+
             member = {
                 'uuid': str(uuid_lib.uuid4()),
                 'class': request.form.get('class', ''),
@@ -157,8 +181,61 @@ def new_member(filename):
             return redirect(url_for('edit_group', filename=filename))
         except Exception as e:
             flash(f'Error adding member: {str(e)}', 'danger')
+    # GET: load group members and optional duplicate prefill
+    with open(filepath, 'r') as f:
+        group_data = json.load(f)
 
-    return render_template('new_member.html', filename=filename)
+    prefill = {}
+    dup_uuid = request.args.get('duplicate')
+    if dup_uuid:
+        src = next((m for m in group_data.get('members', []) if m.get('uuid') == dup_uuid), None)
+        if src:
+            # Build prefill mapping for the form fields
+            move0 = (src.get('move') or [{}])[0]
+            prefill = {
+                'class': src.get('class', ''),
+                'variant': src.get('variant', ''),
+                'name': src.get('name', ''),
+                'customName': src.get('customName', ''),
+                'classification': src.get('classification', ''),
+                'type': src.get('type', ''),
+                'role': src.get('role', ''),
+                'tonnage': src.get('tonnage', 0),
+                'tmm': src.get('tmm', 0),
+                'armor': src.get('armor', 0),
+                'structure': src.get('structure', 0),
+                'size': src.get('size', 1),
+                'threshold': src.get('threshold', 0),
+                'basePoints': src.get('basePoints', 0),
+                'costCR': src.get('costCR', 0),
+                'currentSkill': src.get('currentSkill', 4),
+                'currentHeat': src.get('currentHeat', 0),
+                'overheat': src.get('overheat', 0),
+                'damage_short': (src.get('damage') or {}).get('short', 0),
+                'damage_medium': (src.get('damage') or {}).get('medium', 0),
+                'damage_long': (src.get('damage') or {}).get('long', 0),
+                'damage_extreme': (src.get('damage') or {}).get('extreme', 0),
+                'pilot_name': (src.get('pilot') or {}).get('name', ''),
+                'pilot_gunnery': (src.get('pilot') or {}).get('gunnery', 4),
+                'pilot_piloting': (src.get('pilot') or {}).get('piloting', 4),
+                'pilot_wounds': (src.get('pilot') or {}).get('wounds', 0),
+                'dateIntroduced': src.get('dateIntroduced', ''),
+                'tro': src.get('tro', ''),
+                'mulID': src.get('mulID', 0),
+                'imageURL': src.get('imageURL', ''),
+                'abilities': ', '.join(src.get('abilities', [])),
+                'move_value': move0.get('move', 0),
+                'move_current': move0.get('currentMove', 0),
+                'move_type': move0.get('type', 'Walk'),
+                'jumpMove': src.get('jumpMove', 0),
+            }
+
+    return render_template(
+        'new_member.html',
+        filename=filename,
+        members=group_data.get('members', []),
+        prefill=prefill,
+    )
 
 
 @app.route('/member/<filename>/edit/<member_uuid>', methods=['GET', 'POST'])
