@@ -3,6 +3,6 @@ Remove-Item -Recurse -Force src\dist, src\build, src\app.spec -ErrorAction Ignor
 
 # Build the application
 cd src
-pyinstaller --onefile --add-data "templates;templates" --add-data "../data;data" app.py
+pyinstaller --onefile --add-data "templates;templates" --add-data "../data;data" app.py --name JJEditor
 cd ..
 Write-Host "Build completed. The executable is located in the 'src\dist' directory."

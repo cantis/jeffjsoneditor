@@ -105,3 +105,24 @@ The application follows the Alpha Strike Group Export schema defined in `jeffimp
 - No authentication or logging is implemented (lightweight design)
 - Secret key is set to a development value (change for production use)
 
+## Build and run the Windows executable
+
+This repo includes scripts to build a standalone .exe and to launch it easily on Windows.
+
+1) Build the .exe using PowerShell from the project root:
+
+```powershell
+./build.ps1
+```
+
+2) Run the built app (opens your browser to http://localhost:5000):
+
+```powershell
+./start_app.bat
+```
+
+Notes:
+- The batch file starts the browser, then runs the built executable (as configured in `start_app.bat`).
+- If the executable path changes in your build process, update the path inside `start_app.bat` accordingly.
+- If port 5000 is in use, stop the other service or change the port in `main.py` and rebuild.
+
