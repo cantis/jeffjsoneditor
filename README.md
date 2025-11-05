@@ -123,6 +123,7 @@ This repo includes scripts to build a standalone .exe and to launch it easily on
 
 Notes:
 - The batch file starts the browser, then runs the built executable (as configured in `start_app.bat`).
+- The built executable name is `JJEditor.exe` and is placed at `src\dist\JJEditor.exe` by the build script.
 - If the executable path changes in your build process, update the path inside `start_app.bat` accordingly.
 - If port 5000 is in use, stop the other service or change the port in `main.py` and rebuild.
 
